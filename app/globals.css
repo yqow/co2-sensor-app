@@ -20,3 +20,27 @@ body {
   padding: 1rem;
   color: rgb(var(--foreground-rgb));
 }
+
+/* Default green progress bar */
+.progressbar-container {
+  width: 100%;
+  height: 20px;
+  background-color: #ccc;
+}
+
+.light-green .progressbar {
+  height: 100%;
+  background-color: #0cdd13;
+}
+
+/* Yellow progress bar */
+.yellow .progressbar {
+  height: 100%;
+  background-color: #ffeb3b;
+}
+
+/* Red progress bar */
+.red .progressbar {
+  height: 100%;
+  background-color: #f44336;
+}
