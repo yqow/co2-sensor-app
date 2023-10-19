@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import ProgressBar from './components/ProgressBar';
-
+import Navbar from './components/Navbar';
 interface SensorData {
   co2: number;
   temperature: number;
@@ -43,15 +43,16 @@ export default function Home() {
 
   return (
     <div>
-      <h1> <strong>Sensor Data</strong></h1>
+      <Navbar />
+      <h1><strong>Sensor Data</strong></h1>
       {sensorData ? (
         <div>
           <p> <strong>CO2:</strong> {sensorData.co2} ppm</p>
-          <ProgressBar value={sensorData.co2} acceptableRange={{ min: 800, max: 1500 }} barRange={{lower: 0, upper: 3000 }} />
+          <ProgressBar value={sensorData.co2} acceptableRange={{ min: 800, max: 1500 }} barRange={{ lower: 0, upper: 3000 }} />
           <p> <strong>Temperature:</strong> {sensorData.temperature} °C</p>
-          <ProgressBar value={sensorData.temperature} acceptableRange={{ min: 21.1, max: 26.6 }} barRange={{ lower: 16, upper: 50 }} />   
+          <ProgressBar value={sensorData.temperature} acceptableRange={{ min: 21.1, max: 26.6 }} barRange={{ lower: 16, upper: 50 }} />
           <p> <strong>Humidity:</strong> {sensorData.humidity} RH</p>
-          <ProgressBar value={sensorData.humidity} acceptableRange={{ min: 70, max: 80 }} barRange={{lower: 0, upper: 100 }} />
+          <ProgressBar value={sensorData.humidity} acceptableRange={{ min: 70, max: 80 }} barRange={{ lower: 0, upper: 100 }} />
         </div>
       ) : (
         <p>Loading data...</p>

@@ -8,13 +8,13 @@ interface ProgressBarProps {
 
 const Progressbar: React.FC<ProgressBarProps> = ({ value, acceptableRange, barRange }) => {
   let percentage = 0;
-  
-  percentage = ((value - barRange.lower)/(barRange.upper - barRange.lower)) * 100;
+
+  percentage = ((value - barRange.lower) / (barRange.upper - barRange.lower)) * 100;
   let progressColorClass = 'green'; // Default to green
   if (value > acceptableRange.min && value < acceptableRange.max) {
     progressColorClass = 'light-green'
   }
-  else if (value > acceptableRange.min * 0.9 && value < acceptableRange.max * 1.1 ) {
+  else if (value > acceptableRange.min * 0.9 && value < acceptableRange.max * 1.1) {
     progressColorClass = 'yellow'; // If outside +-10%, set to yellow
   } else {
     progressColorClass = 'red';
