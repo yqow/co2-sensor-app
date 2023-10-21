@@ -88,6 +88,7 @@ export default function Home() {
 
   return (
     <div>
+      <Navbar />
       <h1><strong>Sensor Data</strong></h1>
       {sensorData ? (
         <div>
@@ -114,13 +115,13 @@ export default function Home() {
           />
           {/* {RangeSelector} */}
           <button onClick={() => setIsCO2SelectorPopped(!isCO2SelectorPopped)}>Range selection for CO2</button>
-          {isCO2SelectorPopped ? <RangeSelector range={acceptableRange} setRange={setAcceptableRange} barRange={setbarRange1} /> : null}
+          {isCO2SelectorPopped ? <RangeSelector range={acceptableRange} setRange={setAcceptableRange} barRange={barRange1} /> : null}
           <br></br>
           <button onClick={() => setIsTempSelectorPopped(!isTempSelectorPopped)}>Range selection for temperature</button>
-          {isTempSelectorPopped ? <RangeSelector range={acceptableRange2} setRange={setAcceptableRange2} barRange={setbarRange2} /> : null}
+          {isTempSelectorPopped ? <RangeSelector range={acceptableRange2} setRange={setAcceptableRange2} barRange={barRange2}/> : null}
           <br></br>
           <button onClick={() => setIsHumiditySelectorPopped(!isHumiditySelectorPopped)}>Range selection for humidity</button>
-          {isHumiditySelectorPopped ? <RangeSelector range={acceptableRange3} setRange={setAcceptableRange3} barRange={setbarRange3} /> : null}
+          {isHumiditySelectorPopped ? <RangeSelector range={acceptableRange3} setRange={setAcceptableRange3} barRange={barRange3}/> : null}
         </div>
       ) : (
         <p>Loading data...</p>
