@@ -26,7 +26,7 @@ const Thumb = (props: any, state: any) => <StyledThumb {...props}>{state.valueNo
 const StyledTrack = styled.div`
     top: 0;
     bottom: 0;
-    background: ${(props: any) => (props.index === 2 ? '#f00' : props.index === 1 ? '#0f0' : '#ddd')};
+    background: ${(props: any) => (props.index === 2 ? '#f00' : props.index === 1 ? '#0f0' : '#f00')};
     border-radius: 999px;
 `;
 
@@ -40,7 +40,7 @@ const StyledContainer = styled.div`
     padding-right: 8px;
 `;
 
-const ResizableSlider = ({ range, setRange }: { range: { min: number, max: number }, setRange: any }) => {
+const ResizableSlider = ({ range, setRange, barRange }: { range: { min: number, max: number }, setRange: any, barRange: { lower: number, upper: number } }) => {
 
     const onChange = (val: number[]) => {
         setRange({ min: val[0], max: val[1] });
@@ -48,7 +48,7 @@ const ResizableSlider = ({ range, setRange }: { range: { min: number, max: numbe
 
     return (
         <StyledContainer>
-            <StyledSlider defaultValue={[range.min, range.max]} renderTrack={Track} renderThumb={Thumb} min={0} max={5000} onChange={onChange} />
+            <StyledSlider defaultValue={[range.min, range.max]} renderTrack={Track} renderThumb={Thumb} min={barRange.lower} max={barRange.upper} onChange={onChange} />
         </StyledContainer>
     )
 };
