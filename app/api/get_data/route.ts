@@ -7,6 +7,9 @@ export async function GET(req: any) {
     if (dataString === null) {
       return NextResponse.json({ message: 'Data not available' });
     } else {
+      console.log("Data string = ")
+      console.log(dataString)
+      console.log(typeof(dataString))
       const jsonData = JSON.parse(dataString); // Parse the JSON data string
       return NextResponse.json(jsonData); // Return the parsed JSON object
     }
