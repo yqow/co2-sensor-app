@@ -2,8 +2,6 @@
 
 import ReactSlider from 'react-slider'
 import styled from 'styled-components';
-import Progressbar from './ProgressBar';
-import { ProgressBar } from 'react-bootstrap';
 
 const StyledSlider = styled(ReactSlider)`
     width: 100%;

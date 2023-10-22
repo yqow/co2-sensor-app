@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import ProgressBar from './components/ProgressBar';
-import Navbar from './components/Navbar';
 
 import { AcceptableRange } from './types/ProgressBarTypes';
 import { barRange } from './types/barRangeTypes';
 import RangeSelector from './components/RangeSelector';
+import Layout from './components/Layout';
 
 interface SensorData {
   co2: number;
@@ -48,18 +48,29 @@ export default function Home() {
     fetchSensorData();
   }, []);
 
+  const [acceptableRange, setAcceptableRange] = useState<AcceptableRange>({ min: 800, max: 1800 })
+  const [acceptableRange2, setAcceptableRange2] = useState<AcceptableRange>({ min: 21, max: 27 })
+  const [acceptableRange3, setAcceptableRange3] = useState<AcceptableRange>({ min: 60, max: 80 })
+  const barRange1: barRange  = {lower: 0, upper: 5000}
+  const barRange2: barRange  = {lower: 0, upper: 50}
+  const barRange3: barRange  = {lower: 0, upper: 100}
+  const [isCO2SelectorPopped, setIsCO2SelectorPopped] = useState(false);
+  const [isTempSelectorPopped, setIsTempSelectorPopped] = useState(false);
+  const [isHumiditySelectorPopped, setIsHumiditySelectorPopped] = useState(false);
+
   useEffect(() => {
     function handleVisibilityChange() {
       if (document.hidden) {
-        const redBar = document.querySelectorAll('.progressbar.red');
-        if (redBar.length > 0) {
+        const redBar = document.querySelector('.progressbar-red');
+        if (redBar) {
           setInRedZone(true);
+        } else {
+          setInRedZone(false); // Tab is hidden
         }
-        setInRedZone(false); // Tab is hidden
       } else {
         // Reset the title and set inRedZone based on the progress bar
-        const redBar = document.querySelectorAll('.progressbar.red');
-        if (redBar.length > 0) {
+        const redBar = document.querySelector('.progressbar-red');
+        if (redBar) {
           setInRedZone(true);
         } else {
           setInRedZone(false);
@@ -74,21 +85,38 @@ export default function Home() {
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [inRedZone]);
+  }, [sensorData]);
 
-  const [acceptableRange, setAcceptableRange] = useState<AcceptableRange>({ min: 800, max: 1800 })
-  const [acceptableRange2, setAcceptableRange2] = useState<AcceptableRange>({ min: 21, max: 27 })
-  const [acceptableRange3, setAcceptableRange3] = useState<AcceptableRange>({ min: 60, max: 80 })
-  const [barRange1, setbarRange1] = useState<barRange>({ lower: 0, upper: 5000 })
-  const [barRange2, setbarRange2] = useState<barRange>({ lower: 0, upper: 50 })
-  const [barRange3, setbarRange3] = useState<barRange>({ lower: 0, upper: 100 })
-  const [isCO2SelectorPopped, setIsCO2SelectorPopped] = useState(false);
-  const [isTempSelectorPopped, setIsTempSelectorPopped] = useState(false);
-  const [isHumiditySelectorPopped, setIsHumiditySelectorPopped] = useState(false);
+
+  useEffect(() => {
+        // Start a timer to update the title every second if in the red zone
+        let timerId: NodeJS.Timeout | null = null;
+
+        if (inRedZone) {
+          timerId = setInterval(() => {
+            document.title =
+              document.title === 'CCS Sensor Data'
+                ? 'ALERT: Sensor Data in Red Zone!'
+                : 'CCS Sensor Data';
+          }, 1000); // Update the title every second
+        } else {
+          // Reset the title and clear the timer
+          document.title = 'CCS Sensor Data';
+          if (timerId) {
+            clearInterval(timerId);
+          }
+        }
+    
+        return () => {
+          // Cleanup: clear the timer when the component unmounts
+          if (timerId) {
+            clearInterval(timerId);
+          }
+        };
+  }, [inRedZone])
 
   return (
-    <div>
-      <Navbar />
+    <Layout>
       <h1><strong>Sensor Data</strong></h1>
       {sensorData ? (
         <div>
@@ -118,14 +146,14 @@ export default function Home() {
           {isCO2SelectorPopped ? <RangeSelector range={acceptableRange} setRange={setAcceptableRange} barRange={barRange1} /> : null}
           <br></br>
           <button onClick={() => setIsTempSelectorPopped(!isTempSelectorPopped)}>Range selection for temperature</button>
-          {isTempSelectorPopped ? <RangeSelector range={acceptableRange2} setRange={setAcceptableRange2} barRange={barRange2}/> : null}
+          {isTempSelectorPopped ? <RangeSelector range={acceptableRange2} setRange={setAcceptableRange2} barRange={barRange2} /> : null}
           <br></br>
           <button onClick={() => setIsHumiditySelectorPopped(!isHumiditySelectorPopped)}>Range selection for humidity</button>
-          {isHumiditySelectorPopped ? <RangeSelector range={acceptableRange3} setRange={setAcceptableRange3} barRange={barRange3}/> : null}
+          {isHumiditySelectorPopped ? <RangeSelector range={acceptableRange3} setRange={setAcceptableRange3} barRange={barRange3} /> : null}
         </div>
       ) : (
         <p>Loading data...</p>
       )}
-    </div>
+    </Layout>
   );
 }
