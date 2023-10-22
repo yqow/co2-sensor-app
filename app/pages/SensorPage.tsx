@@ -40,7 +40,7 @@ export default function Home({location} : {location: string}) {
     };
 
     fetchSensorData();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     function handleVisibilityChange() {

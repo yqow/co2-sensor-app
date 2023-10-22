@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET(req: any) {
   try {
-    const dataString = cache.get('data'); // Get the original JSON data string from the cache
+    const dataString: any = cache.get('data'); // Get the original JSON data string from the cache
     if (dataString === null) {
       return NextResponse.json({ message: 'Data not available' });
     } else {
