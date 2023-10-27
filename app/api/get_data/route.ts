@@ -1,5 +1,6 @@
 import { sql, db } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
+import { stringify } from 'querystring';
 
 export async function GET(req: any) {
   const client = await db.connect();
@@ -13,6 +14,7 @@ export async function GET(req: any) {
     // console.log(`Number of rows: ${data.rowCount}`);
     const result = data.rows[0]
     console.log(result)
+    // console.log(stringify(result))
     // console.log(`Get data: ${JSON.stringify(result)}` )
     return NextResponse.json({ ...result }, { status: 200 });
   } catch (err) {
