@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import ProgressBar from '../components/ProgressBar';
-interface SensorData {
-  co2: number;
-  temperature: number;
-  humidity: number;
-}
+import { SensorData } from '../types/sensorDataTypes';
 
 export default function Home({location} : {location: string}) {
   const [sensorData, setSensorData] = useState<SensorData | null>(null);
