@@ -38,7 +38,7 @@ const StyledContainer = styled.div`
     padding-right: 8px;
 `;
 
-const ResizableSlider = ({ range, setRange, barRange }: { range: { min: number, max: number }, setRange: any, barRange: {lower: number, upper: number} }) => {
+const ResizableSlider = ({ range, setRange, barRange }: { range: { min: number, max: number }, setRange: any, barRange: { lower: number, upper: number } }) => {
 
     const onChange = (val: number[]) => {
         setRange({ min: val[0], max: val[1] });

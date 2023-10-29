@@ -91,8 +91,6 @@ export default function Main() {
   const contextValue = {chartData, updateData}
 
   return (
-    <ChartContext.Provider value={contextValue}>
       <Home />
-    </ChartContext.Provider>
   )
 }

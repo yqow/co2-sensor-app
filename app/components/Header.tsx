@@ -19,6 +19,7 @@ const Header = () => {
                     <Nav className="me-auto">
                         <Nav.Link href="/about">About</Nav.Link>
                         <Nav.Link href="/contact">Contact</Nav.Link>
+                        <Nav.Link href="/graph">Graphs</Nav.Link>
                         <NavDropdown title="User" id="basic-nav-dropdown">
                             <NavDropdown.Item href="/signin">Sign In</NavDropdown.Item>
                             <NavDropdown.Divider />
