@@ -13,25 +13,7 @@ const AcceptableRangeContext = createContext({
     setAcceptableRangeState: (arg: any) => { }
 });
 
-// export function sample(){
-//     // useState React hook
-//     const [acceptableRangeState, setAcceptableRangeState] = useState(defaultRange);
-
-//     // useState React hook
-//     useEffect(() => { 
-//       setAcceptableRangeState(defaultRange);
-//     }, [])
-
-//     return {
-//         acceptableRangeState, setAcceptableRangeState
-//     }
-//   }
-
 export const AcceptableRangeProvider = ({ children }: { children: ReactNode }) => {
-    // const setStateCalled = (arg: any) => {
-    //     console.log("Root set state called");
-    //     setAcceptableRangeState(arg);
-    // }
     const [acceptableRangeState, setAcceptableRangeState] = useState(defaultRange);
 
     useEffect(() => {

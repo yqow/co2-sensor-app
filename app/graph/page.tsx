@@ -31,6 +31,7 @@ interface Dataset {
     id: number;
     label: string;
     data: number[];
+    borderColor: string;
 }
 
 interface ChartData {
@@ -50,17 +51,14 @@ const page = () => {
     const [data, setData] = useState<ChartData>({ labels: [], datasets: [] });
 
     const last30Mins = () => {
-        console.log("Clicked 30 min")
         setDuration("30");
     }
 
     const last1hour = () => {
-        console.log("Clicked 1 hour")
         setDuration("60")
     }
 
     const setRealtime = () => {
-        console.log("Clicked Realtime")
         const currentTime = new Date();
         currentTime.setMinutes(currentTime.getMinutes() - 10)
         setCurTime(currentTime);
@@ -69,7 +67,6 @@ const page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log("Running for fetching with duration ", duration)
             try {
                 // Fetch real-time CO2 data (replace with your API call)
                 const minDiff = minutesDiff(curTime, new Date());
@@ -80,24 +77,28 @@ const page = () => {
                 const newSensorData = await fetch(`/api/get_data${queryParams}`).then((res) => res.json());
                 const result = newSensorData.result
                 setData({
-                    labels: result.map((d: { timestamp: string }) => d.timestamp.slice(0, -5)),
+                    labels: result.map((d: { timestamp: string }) => d.timestamp.slice(11, -5)),
                     datasets: [
                         {
                             id: 1,
-                            label: "CO2",
+                            label: "CO2 (ppm)",
                             data: result.map((d: { co2: number }) => d.co2),
+                            borderColor: 'rgb(53, 162, 235)',
                         },
                         {
                             id: 2,
-                            label: "Temperature",
+                            label: "Temperature (°C)",
                             data: result.map((d: { temperature: number }) => d.temperature),
+                            borderColor: 'rgb(255,255,0)',
                         },
                         {
                             id: 3,
-                            label: "Humidity",
+                            label: "Humidity (RH)",
                             data: result.map((d: { humidity: number }) => d.humidity),
+                            borderColor: 'rgb(0, 128, 0)',
                         },
-                    ]
+                    ],
+                    
                 })
             } catch (error) {
                 console.error('Error fetching CO2 data:', error);
@@ -105,11 +106,9 @@ const page = () => {
         };
         fetchData();
         if (duration !== "realtime") {
-            console.log("Should call for 30/60 mins")
             return () => {}
         } else {
             const updateInterval = setInterval(fetchData, 5000); // Update CO2 every 5 seconds
-            console.log("Should call for realtime")
             return () => clearInterval(updateInterval); // Clear the interval when unmounting
         }
 
@@ -127,9 +126,6 @@ const page = () => {
             </>
         )
     }
-
-    console.log(JSON.stringify(acceptableRangeState))
-
     return (
         <div>
             <div className="flex flex-row">

@@ -11,6 +11,7 @@ import { db } from '@vercel/postgres';
 import { SensorData } from './types/sensorDataTypes';
 import Chart, { ChartData } from './components/Chart';
 import {AcceptableRangeContext} from "./context/acceptableRangeContext"
+// import SocketExample from './components/socket';
 
 
 export default function Home() {
@@ -109,6 +110,7 @@ export default function Home() {
   return (
     <Layout>
       <h1><strong>Sensor Data</strong></h1>
+      <h2>Time</h2>
       {sensorData ? (
         <div>
           <p><strong>CO2:</strong> {sensorData.co2} ppm</p>

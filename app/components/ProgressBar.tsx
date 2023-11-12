@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { spawn } from 'child_process';
 
 interface ProgressBarProps {
   value: number;
   acceptableRange: { min: number; max: number };
   barRange: { lower: number; upper: number };
-  onRedZone: (inRedZone: boolean) => void; // Ensure the type matches your intended use
+  onRedZone: (inRedZone: boolean) => void;
 }
 
 const Progressbar: React.FC<ProgressBarProps> = ({
@@ -12,44 +13,38 @@ const Progressbar: React.FC<ProgressBarProps> = ({
   acceptableRange,
   barRange,
 }) => {
-  let percentage = 0;
-  percentage = ((value - barRange.lower) / (barRange.upper - barRange.lower)) * 100;
-  let progressColorClass = 'green'; // Default to green
+  let percentage = ((value - barRange.lower) / (barRange.upper - barRange.lower)) * 100;
+  let progressColorClass = 'light-green';
 
   if (value > acceptableRange.min && value < acceptableRange.max) {
     progressColorClass = 'light-green';
   } else if (value > acceptableRange.min * 0.9 && value < acceptableRange.max * 1.1) {
-    progressColorClass = 'yellow'; // If outside +-10%, set to yellow
+    progressColorClass = 'yellow';
   } else {
     progressColorClass = 'red';
   }
 
   useEffect(() => {
-    // Start a timer to update the title every second if in the red zone
-    let timerId: NodeJS.Timeout | null = null;
-
     if (progressColorClass === 'red') {
-      timerId = setInterval(() => {
+      console.log("Progress bar red")
+      fetch ("/api/solenoid").then(() => {
+        console.log("Done fetching api/solenoid")
+      })
+      let timerId = setInterval(() => {
         document.title =
           document.title === 'CCS Sensor Data'
             ? 'ALERT: Sensor Data in Red Zone!'
             : 'CCS Sensor Data';
-      }, 1000); // Update the title every second
-    } else {
-      // Reset the title and clear the timer
-      document.title = 'CCS Sensor Data';
-      if (timerId) {
-        clearInterval(timerId);
-      }
-    }
+      }, 1000);
 
-    return () => {
-      // Cleanup: clear the timer when the component unmounts
-      if (timerId) {
+      return () => {
         clearInterval(timerId);
-      }
-    };
+      };
+    } else {
+      document.title = 'CCS Sensor Data';
+    }
   }, [progressColorClass]);
+
 
   return (
     <div className="progressbar-container">
